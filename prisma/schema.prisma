@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type Coord {
+  lat Float
+  lng Float
+}
+
+type Place {
+  name  String
+  coord Coord
+}
+
+model Route {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  source      Place
+  destination Place
+  distance    Float
+  duration    Float
+  directions  Json
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  RouteDriver RouteDriver?
+}
+
+type Point {
+  location   Coord
+  created_at DateTime @default(now())
+}
+
+model RouteDriver {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  route     Route    @relation(fields: [route_id], references: [id])
+  route_id  String   @unique @db.ObjectId
+  points    Point[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

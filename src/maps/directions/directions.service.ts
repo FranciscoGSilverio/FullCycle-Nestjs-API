@@ -21,8 +21,6 @@ export class DirectionsService {
       key: this.configService.get<string>('GOOGLE_MAPS_API_KEY'),
     };
 
-    console.log('requestParams', requestParams);
-
     const { data } = await this.googleMapsClient.directions({
       params: requestParams,
     });
