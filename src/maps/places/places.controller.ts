@@ -7,6 +7,7 @@ export class PlacesController {
 
   @Get()
   findPlaces(@Query('text') text: string) {
+    console.log('here here herre');
     return this.placesService.findPlaces(text);
   }
 }
